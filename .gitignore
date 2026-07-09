@@ -1,0 +1,12 @@
+# Секреты — НИКОГДА не коммитим
+service_account.json
+.env
+
+# Служебное
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Тестовые выгрузки
+test_run.csv

@@ -1,0 +1,6 @@
+# Зависимости парсера Google Maps.
+# Установка в venv проекта:  pip install -r requirements.txt
+playwright>=1.58
+pandas>=2.0
+gspread>=6.0
+google-auth>=2.0
