@@ -5,6 +5,8 @@ location (name, rating, review count, website, phone, address, map link) and
 exports them to a clean CSV / Google Sheets — built for lead generation,
 competitor analysis, and local market research.
 
+<!-- TODO: add a screenshot of the resulting Google Sheet here, e.g. ![Result](docs/result.png) -->
+
 **Engineering highlights:**
 - Browser automation with Playwright (handles Google Maps' dynamic, infinite-scroll result list)
 - Deduplication across repeated runs, so re-running doesn't re-collect the same listings
@@ -20,12 +22,22 @@ mapping in a given city or district, cold-outreach list building.
 
 1. `pip install -r requirements.txt` (Playwright also needs a one-time `playwright install chromium`)
 2. Edit the config block at the top of `main.py` — search keyword, location, how many new listings to collect per run
-3. *(Optional)* Google Sheets export: create a Google Cloud service account, download its JSON key as `service_account.json` in the project folder, share your target spreadsheet with the service account's email, and set `GOOGLE_SHEET_ID` in `main.py`
+3. *(Optional)* Google Sheets export: create a Google Cloud service account, download its JSON key as `service_account.json` in the project folder, share your target spreadsheet with the service account's email, then copy `.env.example` to `.env` and put your spreadsheet ID into `GOOGLE_SHEET_ID`
 4. Run: `python main.py`
 
-Without `service_account.json` configured, the script simply writes to CSV —
-no errors, no missing functionality.
+Without `service_account.json` and `GOOGLE_SHEET_ID` configured, the script
+simply writes to CSV — no errors, no missing functionality.
 
 ## Output columns
 
-`Назва` (Name) · `Рейтинг` (Rating) · `Відгуки` (Review count) · `Сайт` (Website) · `Телефон` (Phone) · `Адреса` (Address) · `Посилання` (Map link)
+`Название` (Name) · `Рейтинг` (Rating) · `Отзывы` (Review count) · `Сайт` (Website) · `Телефон` (Phone) · `Адрес` (Address) · `Ссылка` (Map link)
+
+## Note on data sources
+
+This project reads publicly visible listing data through browser automation and
+is intended for small-scale research and as a technical demo. Google's terms of
+service restrict automated scraping of Google Maps, so for production or
+high-volume use the official
+[Google Places API](https://developers.google.com/maps/documentation/places/web-service/overview)
+is the compliant option, and the export and deduplication parts of this project
+can be reused with it.

@@ -28,8 +28,22 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Google Sheets (необязательно). Пусто — парсер просто пишет CSV, как раньше.
 # GOOGLE_CREDS_PATH — путь к JSON-ключу service account (положи рядом с main.py)
 # GOOGLE_SHEET_ID   — ID таблицы из ссылки: docs.google.com/spreadsheets/d/<ВОТ_ЭТО>/edit
+#                     берётся из переменной окружения или из файла .env (см. .env.example)
+def _load_dotenv(path):
+    """Мини-загрузчик .env без доп. зависимостей: строки вида KEY=value."""
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
+                os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+_load_dotenv(os.path.join(BASE_DIR, ".env"))
 GOOGLE_CREDS_PATH = os.path.join(BASE_DIR, "service_account.json")
-GOOGLE_SHEET_ID = "1_Yzg0DRuYG7OVCPYhZG8BKoJ5D5Y6hJdEFNwzWuRBdg"
+GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID", "")
 
 # Имена колонок храним в одном месте — чтобы нигде не было рассинхрона
 COLUMNS = ["Название", "Рейтинг", "Отзывы", "Сайт", "Телефон", "Адрес", "Ссылка"]
